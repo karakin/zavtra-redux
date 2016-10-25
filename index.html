@@ -74,6 +74,9 @@
         window.addEventListener( "error", function (event) {
             game.stop();
             viewportElement.style.display = "none";
+            renderStats.domElement.style.display = "none";
+            updateStats.domElement.style.display = "none";
+
             alert( event.error.message );
         }, false);
 
