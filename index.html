@@ -59,38 +59,45 @@
         viewportElement.width = 1000;
         viewportElement.height = 700;
 
-        try {
-            var game = new Game(viewportContext, viewportElement.width, viewportElement.height);
 
-            window.addEventListener( "keydown", function (event) {
-                game.onEvent(event);
+
+
+        var game = new Game(viewportContext, viewportElement.width, viewportElement.height);
+
+        window.addEventListener( "keydown", function (event) {
+            game.onEvent(event);
+        }, false);
+
+        window.addEventListener( "error", function (event) {
+            game.stop();
+            viewportElement.style.display = "none";
+            alert( event.error.message );
+        }, false);
+
+        viewportElement.addEventListener( "mousedown", function (event) {
+            game.onEvent( event );
+        }, false );
+
+
+        game.init();
+        game.start();
+
+
+        if (typeof document.addEventListener === "undefined" || typeof document[hidden] === "undefined") {
+            alert("This demo requires a modern browser that supports the Page Visibility API.");
+        } else {
+            document.addEventListener(visibilityChange, function(){
+                if( document[hidden] ) {
+                    document.title = "[Paused] The game of #ZAVTRA";
+                    game.stop();
+                } else {
+                    document.title = "The game of #ZAVTRA";
+                    game.start();
+                }
             }, false);
-
-            viewportElement.addEventListener( "mousedown", function (event) {
-                game.onEvent( event );
-            }, false );
-
-            game.init();
-            game.start();
-
-
-            if (typeof document.addEventListener === "undefined" || typeof document[hidden] === "undefined") {
-                alert("This demo requires a modern browser that supports the Page Visibility API.");
-            } else {
-                document.addEventListener(visibilityChange, function(){
-                    if( document[hidden] ) {
-                        document.title = "[Paused] The game of #ZAVTRA";
-                        game.stop();
-                    } else {
-                        document.title = "The game of #ZAVTRA";
-                        game.start();
-                    }
-                }, false);
-            }
-
-        } catch (err) {
-            alert(err.message)
         }
+
+
     })();
 
 

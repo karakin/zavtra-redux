@@ -4,6 +4,7 @@
 
 var Game = function(context, width, height) {
 
+    this._active = false;
     this._scene = null;
 
     this._tps = 50;
@@ -24,18 +25,18 @@ var Game = function(context, width, height) {
 Game.prototype.start = function(){
 
     if( this._context == undefined ) {
-        throw new Error( "_context is undefined" );
+        throw new Error( "Game::start(): _context is undefined" );
     }
     if( this._width == undefined ) {
-        throw new Error( "_width is undefined" );
+        throw new Error( "Game::start(): _width is undefined" );
     }
     if( this._height == undefined ) {
-        throw new Error( "_height is undefined" );
+        throw new Error( "Game::start(): _height is undefined" );
     }
 
 
     console.log( "Game::start()", "width", this._width,"height", this._height );
-
+    this._active = true;
     this._nextGameTick = (new Date()).getTime();
 
     this.mainLoopTimer = setInterval( function(_game){
@@ -58,7 +59,7 @@ Game.prototype.start = function(){
 
 Game.prototype.stop = function(){
     console.log( "Game::stop()" );
-    this.active = false;
+    this._active = false;
     clearInterval(this.mainLoopTimer);
 };
 
@@ -98,15 +99,22 @@ Game.prototype.onUpdate = function(){
 
 Game.prototype.onEvent = function(event) {
 
-    console.log( "Game::onEvent", event.type );
+    if( this._active ) {
+        console.log( "Game::onEvent", event.type );
 
-    if( this._scene != undefined ) {
-        this._scene.onEvent( event );
+        if( this._scene != undefined ) {
+            this._scene.onEvent( event );
+        }
     }
+
 };
 
 
 Game.prototype.setScene = function(scene){
+
+    if( scene == undefined ) {
+        throw new Error( "Game::setScene() Scene is undefined" );
+    }
 
     console.log( this._scene, "->", scene.constructor, scene );
 
