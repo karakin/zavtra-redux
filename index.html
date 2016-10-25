@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The game of #ZAVTRA</title>
+    <style>
+        canvas#viewport {
+            border: 1px solid black;
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="viewport">Обновите браузер</canvas>
+<p>Powered By Ledorub Engine</p>
+<script src="stats.js"></script>
+<script src="game.js"></script>
+<script src="scene.js"></script>
+<script>
+
+    var renderStats = new Stats();
+    document.body.appendChild(renderStats.domElement);
+
+    var updateStats = new Stats();
+    document.body.appendChild(updateStats.domElement);
+
+
+
+
+    (function() {
+
+
+        var hidden;
+        var visibilityChange;
+        if (typeof document.hidden !== "undefined") {
+            hidden = "hidden";
+            visibilityChange = "visibilitychange";
+        } else if (typeof document.mozHidden !== "undefined") { // Firefox up to v17
+            hidden = "mozHidden";
+            visibilityChange = "mozvisibilitychange";
+        } else if (typeof document.webkitHidden !== "undefined") { // Chrome up to v32, Android up to v4.4, Blackberry up to v10
+            hidden = "webkitHidden";
+            visibilityChange = "webkitvisibilitychange";
+        }
+
+
+
+        var viewportElement = document.getElementById("viewport");
+        var viewportContext = viewportElement.getContext("2d");
+
+        viewportElement.width = 800;
+        viewportElement.height = 600;
+
+        try {
+            var game = new Game(viewportContext, viewportElement.width, viewportElement.height);
+
+            window.addEventListener( "keydown", function (event) {
+                game.onEvent(event);
+            }, false);
+
+            viewportElement.addEventListener( "mousedown", function (event) {
+                game.onEvent( event );
+            }, false );
+
+            game.init();
+            game.start();
+
+
+            if (typeof document.addEventListener === "undefined" || typeof document[hidden] === "undefined") {
+                alert("This demo requires a modern browser that supports the Page Visibility API.");
+            } else {
+                document.addEventListener(visibilityChange, function(){
+                    if( document[hidden] ) {
+                        document.title = "[Paused] The game of #ZAVTRA";
+                        game.stop();
+                    } else {
+                        document.title = "The game of #ZAVTRA";
+                        game.start();
+                    }
+                }, false);
+            }
+
+        } catch (err) {
+            alert(err.message)
+        }
+    })();
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
+
