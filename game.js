@@ -75,9 +75,19 @@ Game.prototype.init = function() {
 
 
 Game.prototype.onFrameUpdate = function(){
+
+    this._context.clearRect( 0, 0, this._width, this._height );
+
     if( this._scene != undefined ) {
         this._scene.onDraw( this._context, this._interp );
     }
+
+    this._context.save();
+    this._context.fillStyle = "#FFFFFF";
+    this._context.font = "10px Arial";
+    this._context.textAlign="right";
+    this._context.fillText( "Powered By Ledorub Engine", this._width - 15, 15 );
+    this._context.restore();
 };
 
 Game.prototype.onUpdate = function(){

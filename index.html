@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <title>The game of #ZAVTRA</title>
     <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         canvas#viewport {
             border: 1px solid black;
-            width: 800px;
         }
     </style>
 </head>
 <body>
-
+<div>
 <canvas id="viewport">Обновите браузер</canvas>
-<p>Powered By Ledorub Engine</p>
+</div>
+
 <script src="stats.js"></script>
 <script src="game.js"></script>
 <script src="scene.js"></script>
@@ -50,8 +56,8 @@
         var viewportElement = document.getElementById("viewport");
         var viewportContext = viewportElement.getContext("2d");
 
-        viewportElement.width = 800;
-        viewportElement.height = 600;
+        viewportElement.width = 1000;
+        viewportElement.height = 700;
 
         try {
             var game = new Game(viewportContext, viewportElement.width, viewportElement.height);
@@ -86,11 +92,6 @@
             alert(err.message)
         }
     })();
-
-
-
-
-
 
 
 </script>
