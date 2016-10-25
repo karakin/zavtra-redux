@@ -104,6 +104,7 @@ Game.prototype.setScene = function(scene){
         this._scene.onFinish();
     }
 
+    scene.onInit();
     this._scene = scene;
 };
 
