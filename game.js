@@ -97,7 +97,13 @@ Game.prototype.onEvent = function(event) {
 
 
 Game.prototype.setScene = function(scene){
+
     console.log( this._scene, "->", scene.constructor, scene );
+
+    if( this._scene != undefined ) {
+        this._scene.onFinish();
+    }
+
     this._scene = scene;
 };
 
