@@ -116,7 +116,7 @@ Game.prototype.setScene = function(scene){
         throw new Error( "Game::setScene() Scene is undefined" );
     }
 
-    console.log( this._scene, "->", scene.constructor, scene );
+    console.log( this._scene, "->", scene.constructor );
 
     if( this._scene != undefined ) {
         this._scene.onFinish();

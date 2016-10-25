@@ -12,7 +12,9 @@ var IntroScene = function(_game) {
 IntroScene.prototype = Object.create(Scene.prototype);
 IntroScene.prototype.constructor = IntroScene;
 
+
 IntroScene.prototype.onDraw = function (context, interp) {
+
     context.save();
     context.fillStyle = "#000000";
     context.fillRect( 0, 0, this._gameRef._width, this._gameRef._height );
@@ -48,6 +50,12 @@ IntroScene.prototype.onUpdate = function() {
 };
 
 IntroScene.prototype.onEvent = function(event) {
+    console.log( "IntoScene::event()", event );
+
+    if( event.type === "keydown" && event.keyCode == 13 ) {
+        //this._gameRef.setScene( null );
+    }
+
 };
 
 IntroScene.prototype.onFinish = function(event) {
