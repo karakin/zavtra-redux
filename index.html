@@ -28,10 +28,13 @@
 
     var renderStats = new Stats();
     document.body.appendChild(renderStats.domElement);
+    renderStats.domElement.style.position = "absolute";
+    renderStats.domElement.style.top = "0px";
 
     var updateStats = new Stats();
     document.body.appendChild(updateStats.domElement);
-
+    updateStats.domElement.style.position = "absolute";
+    updateStats.domElement.style.top = "48px";
 
 
 
