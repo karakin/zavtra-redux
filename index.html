@@ -26,15 +26,82 @@
 <script src="src/introscene.js"></script>
 <script>
 
-    var renderStats = new Stats();
-    document.body.appendChild(renderStats.domElement);
-    renderStats.domElement.style.position = "absolute";
-    renderStats.domElement.style.top = "0px";
+    /**
+     * виджет отображения FPS и TPS
+     * @constructor
+     */
+    var StatsWidget = function() {
+        this._renderStats = new Stats();
+        this._updateStats = new Stats();
 
-    var updateStats = new Stats();
-    document.body.appendChild(updateStats.domElement);
-    updateStats.domElement.style.position = "absolute";
-    updateStats.domElement.style.top = "48px";
+        this._renderStats.domElement.style.position = "absolute";
+        this._renderStats.domElement.style.top = "0px";
+
+        this._updateStats.domElement.style.position = "absolute";
+        this._updateStats.domElement.style.top = "48px";
+
+        this._isVisible = true;
+    };
+
+    /**
+     * получить виджет FPS
+     * @returns {Stats}
+     */
+    StatsWidget.prototype.renderStatsWidget = function () {
+        return this._renderStats;
+    };
+
+    /**
+     * получить виджет TPS
+     * @returns {Stats}
+     */
+    StatsWidget.prototype.updateStatsWidget = function () {
+        return this._updateStats;
+    };
+
+    /**
+     * показать виджет
+     */
+    StatsWidget.prototype.show = function () {
+
+        if( this._isVisible == true )
+            return;
+
+        this._isVisible = true;
+        this._updateStats.domElement.style.visibility = "visible";
+        this._renderStats.domElement.style.visibility = "visible";
+    };
+
+    /**
+     * скрыть виджет
+     */
+    StatsWidget.prototype.hide = function () {
+
+        if( this._isVisible == false )
+            return;
+
+        this._isVisible = false;
+
+        this._updateStats.domElement.style.visibility = "hidden";
+        this._renderStats.domElement.style.visibility = "hidden";
+    };
+
+    /**
+     * переключить состояние видимости виджета
+     */
+    StatsWidget.prototype.toggle = function () {
+        if( this._isVisible )
+            this.hide();
+        else
+            this.show();
+    };
+
+
+    var debug = new StatsWidget();
+    document.body.appendChild(debug.renderStatsWidget().domElement);
+    document.body.appendChild(debug.updateStatsWidget().domElement);
+
+
 
 
 
@@ -68,14 +135,17 @@
         var game = new Game(viewportContext, viewportElement.width, viewportElement.height);
 
         window.addEventListener( "keydown", function (event) {
+
+            if( event.keyCode == 192 )
+                debug.toggle();
+
             game.onEvent(event);
         }, false);
 
         window.addEventListener( "error", function (event) {
             game.stop();
             viewportElement.style.display = "none";
-            renderStats.domElement.style.display = "none";
-            updateStats.domElement.style.display = "none";
+            debug.hide();
 
             alert( event.error.message );
         }, false);

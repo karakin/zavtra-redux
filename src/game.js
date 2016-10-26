@@ -114,7 +114,7 @@ Game.prototype.start = function(){
     this.mainLoopTimer = setInterval( function(_game){
         _game._loops = 0;
         while( (new Date()).getTime() > _game._nextGameTick && _game._loops < _game._maxFrameSkip ) {
-            updateStats.update();
+            debug.updateStatsWidget().update();
             _game.onUpdate();
 
             _game._nextGameTick += _game._skipTicks;
@@ -123,7 +123,7 @@ Game.prototype.start = function(){
 
         _game._interp = ( (new Date()).getTime() + _game._skipTicks - _game._nextGameTick ) / _game._skipTicks;
 
-        renderStats.update();
+        debug.renderStatsWidget().update();
         _game.onFrameUpdate();
 
     }, 0, this);
