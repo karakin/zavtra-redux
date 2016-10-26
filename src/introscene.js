@@ -17,22 +17,22 @@ IntroScene.prototype.onDraw = function (context, interp) {
 
     context.save();
     context.fillStyle = "#000000";
-    context.fillRect( 0, 0, this._gameRef._width, this._gameRef._height );
+    context.fillRect( 0, 0, this._gameRef.width(), this._gameRef.height() );
 
-    context.textAlign="center";
+    context.textAlign = "center";
 
     context.fillStyle = "#FFFFFF";
-    context.font="50px Arial";
+    context.font = "50px Arial";
 
-    context.fillText("The Game of #Zavtra", Math.floor( this._gameRef._width / 2 ), Math.floor( this._gameRef._height / 2 ));
+    context.fillText("The Game of #Zavtra", Math.floor( this._gameRef.width() / 2 ), Math.floor( this._gameRef.height() / 2 ));
 
     context.fillStyle = "#9c0000";
     context.font = "25px Arial";
-    context.fillText("Redux", Math.floor( this._gameRef._width / 2 ) + 200, Math.floor( this._gameRef._height / 2 ) + 25);
+    context.fillText("Redux", Math.floor( this._gameRef.width() / 2 ) + 200, Math.floor( this._gameRef.height() / 2 ) + 25 );
 
     context.fillStyle = "#FFFFFF";
     context.font = ( Math.floor( Math.cos( this._internalTimer * 0.2 ) * 5 ) + 25 ) + "px Arial";
-    context.fillText("Нажмите Enter для начала игры", Math.floor( this._gameRef._width / 2 ), this._gameRef._height - 35);
+    context.fillText("Нажмите Enter для начала игры", Math.floor( this._gameRef.width() / 2 ), this._gameRef.height() - 35 );
 
 
 

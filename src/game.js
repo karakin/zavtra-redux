@@ -69,7 +69,27 @@ var Game = function(context, width, height) {
      */
     this._height = height;
 
+
+
+
 };
+
+/**
+ * получить ширину игрового экрана
+ * @returns {number}
+ */
+Game.prototype.width = function () {
+    return this._width;
+};
+
+/**
+ * получить высоту игрового экрана
+ * @returns {number}
+ */
+Game.prototype.height = function() {
+    return this._height;
+};
+
 
 /**
  * запуск игрового цикла
@@ -132,7 +152,7 @@ Game.prototype.restart = function() {
  */
 Game.prototype.init = function() {
     console.log( "Game::init()" );
-    this.setScene( new IntroScene( this ) );
+    this.setScene( "IntroScene" );
 };
 
 
@@ -173,7 +193,7 @@ Game.prototype.onUpdate = function(){
 Game.prototype.onEvent = function(event) {
 
     if( this._active ) {
-        console.log( "Game::onEvent", event.type );
+        console.log( "Game::onEvent()", event.type );
 
         if( this._scene != undefined ) {
             this._scene.onEvent( event );
@@ -198,7 +218,15 @@ Game.prototype.setScene = function(scene){
         this._scene.onFinish();
     }
 
-    scene.onInit();
-    this._scene = scene;
+    sceneToInstantiate.onInit();
+    this._scene = sceneToInstantiate;
+};
+
+/**
+ * получить текущую сцену
+ * @returns {Scene|*}
+ */
+Game.prototype.scene = function () {
+    return this._scene;
 };
 
