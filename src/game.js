@@ -203,16 +203,21 @@ Game.prototype.onEvent = function(event) {
 };
 
 /**
- * устанавливает текущую сцену
- * @param scene Scene
+ * устанавливает текущую сцену по имени класса сцены
+ * @param scene string имя класса сцены
  */
 Game.prototype.setScene = function(scene){
 
-    if( scene == undefined ) {
+    console.log( "Game::setScene()", scene );
+
+    if( window[scene] == undefined )
+        throw new Error( "Game::setScene() " + scene + " does not name a type" );
+
+    var sceneToInstantiate = new window[ scene ](this);
+
+    if( sceneToInstantiate == undefined ) {
         throw new Error( "Game::setScene() Scene is undefined" );
     }
-
-    console.log( this._scene, "->", scene.constructor );
 
     if( this._scene != undefined ) {
         this._scene.onFinish();
