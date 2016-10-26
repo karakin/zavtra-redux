@@ -1,27 +1,79 @@
 /**
  * Created by Nikolaj on 25.10.2016.
+ *
+ * Главный класс игры. Реализует игровой цикл с постоянной скоростью обновления игровых состояний,
+ * которая не зависит от переменного FPS.
  */
 
+/**
+ * конструктор класса Game
+ * @param context CanvasRenderingContext2D - ссылка на текущий контекст отрисовки
+ * @param width integer - ширина игрового экрана
+ * @param height integer - высота игрового экрана
+ * @constructor
+ */
 var Game = function(context, width, height) {
 
+    /**
+     *
+     * @type {boolean}
+     * @private
+     */
     this._active = false;
+
+    /**
+     * текущая сцена
+     * @type Scene
+     * @private
+     */
     this._scene = null;
 
+    /**
+     * количество тиков в секунду (постоянная скорость обновления)
+     * @type {number}
+     * @private
+     */
     this._tps = 50;
 
     this._loops = 0;
     this._skipTicks = 1000 / this._tps;
     this._maxFrameSkip = 10;
     this._nextGameTick = 0;
+
+    /**
+     * относительная позиция во времени между текущи    м и следующим кадрами
+     * @type {number}
+     * @private
+     */
     this._interp = 0.0;
 
 
+    /**
+     * текущий контекст отрисовки
+     * @type CanvasRenderingContext2D
+     * @private
+     */
     this._context = context;
+
+    /**
+     * ширина игрового экрана
+     * @type {number}
+     * @private
+     */
     this._width = width;
+
+    /**
+     * высота игрового экрана
+     * @type {number}
+     * @private
+     */
     this._height = height;
 
 };
 
+/**
+ * запуск игрового цикла
+ */
 Game.prototype.start = function(){
 
     if( this._context == undefined ) {
@@ -57,24 +109,37 @@ Game.prototype.start = function(){
     }, 0, this);
 };
 
+/**
+ * остановка игрового цикла
+ */
 Game.prototype.stop = function(){
     console.log( "Game::stop()" );
     this._active = false;
     clearInterval(this.mainLoopTimer);
 };
 
-
+/**
+ * перезапуск игры
+ */
 Game.prototype.restart = function() {
-
+    this.stop();
+    this.init();
+    this.start();
 };
 
+/**
+ * инициализация игры перед запуском
+ */
 Game.prototype.init = function() {
     console.log( "Game::init()" );
     this.setScene( new IntroScene( this ) );
 };
 
 
-
+/**
+ * Метод отрисовки игры
+ * Выполняется настолько быстро, насколько это возможно
+ */
 Game.prototype.onFrameUpdate = function(){
 
     this._context.clearRect( 0, 0, this._width, this._height );
@@ -91,12 +156,20 @@ Game.prototype.onFrameUpdate = function(){
     this._context.restore();
 };
 
+/**
+ * Метод обновления состояний игры
+ * Выполняется this._tps раз в секунду
+ */
 Game.prototype.onUpdate = function(){
     if( this._scene != undefined ) {
         this._scene.onUpdate();
     }
 };
 
+/**
+ * обработчик событий
+ * @param event Event
+ */
 Game.prototype.onEvent = function(event) {
 
     if( this._active ) {
@@ -109,7 +182,10 @@ Game.prototype.onEvent = function(event) {
 
 };
 
-
+/**
+ * устанавливает текущую сцену
+ * @param scene Scene
+ */
 Game.prototype.setScene = function(scene){
 
     if( scene == undefined ) {
