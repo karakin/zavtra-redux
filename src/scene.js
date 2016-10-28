@@ -21,6 +21,14 @@ var Scene = function(_game) {
      */
     this._gameRef = _game;
 
+    /**
+     * коллекция объектов
+     * @type {Array}
+     * @protected
+     */
+    this._objects = [];
+
+
     if( this.constructor === Scene ){
         throw new Error("GameState is abstract");
     }

@@ -24,6 +24,10 @@
 <script src="src/game.js"></script>
 <script src="src/scene.js"></script>
 <script src="src/introscene.js"></script>
+<script src="src/testscene.js"></script>
+<script src="src/gameobject.js"></script>
+<script src="src/resourcemanager.js"></script>
+<script src="src/helpers.js"></script>
 <script>
 
     /**
@@ -101,13 +105,15 @@
     document.body.appendChild(debug.renderStatsWidget().domElement);
     document.body.appendChild(debug.updateStatsWidget().domElement);
 
+    var viewportElement = document.getElementById("viewport");
+    var viewportContext = viewportElement.getContext("2d");
 
+    viewportElement.width = 1000;
+    viewportElement.height = 700;
 
-
+    var game = new Game(viewportContext, viewportElement.width, viewportElement.height);
 
     (function() {
-
-
         var hidden;
         var visibilityChange;
         if (typeof document.hidden !== "undefined") {
@@ -122,17 +128,18 @@
         }
 
 
-
-        var viewportElement = document.getElementById("viewport");
-        var viewportContext = viewportElement.getContext("2d");
-
-        viewportElement.width = 1000;
-        viewportElement.height = 700;
-
-
-
-
-        var game = new Game(viewportContext, viewportElement.width, viewportElement.height);
+//
+//        var totalLoaded = 0;
+//        var maxCount = 11;
+//        for( var i = 1; i < 12; i++ ) {
+//            window[ "resource_" + i ] = new Image();
+//            window[ "resource_" + i ].src = "resources/agregato" + i + ".png";
+//            window[ "resource_" + i ].onload = function(){
+//                totalLoaded++;
+//                var loadEvent = new CustomEvent( 'resource', { 'detail' : { loaded: true, total: totalLoaded, max: maxCount } } );
+//                game.onEvent( loadEvent );
+//            };
+//        }
 
         window.addEventListener( "keydown", function (event) {
 
@@ -146,6 +153,7 @@
             game.stop();
             viewportElement.style.display = "none";
             debug.hide();
+            console.log( event );
 
             alert( event.error.message );
         }, false);
