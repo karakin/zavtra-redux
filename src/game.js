@@ -33,7 +33,7 @@ var Game = function(context, width, height) {
      * @type {number}
      * @private
      */
-    this._tps = 50;
+    this._tps = 25;
 
     this._loops = 0;
     this._skipTicks = 1000 / this._tps;
@@ -41,12 +41,18 @@ var Game = function(context, width, height) {
     this._nextGameTick = 0;
 
     /**
-     * относительная позиция во времени между текущи    м и следующим кадрами
+     * количество тиков с момента запуска текущей сцены
+     * @type {number}
+     * @private
+     */
+    this._time = 0;
+
+    /**
+     * относительная позиция во времени между текущим и следующим кадрами
      * @type {number}
      * @private
      */
     this._interp = 0.0;
-
 
     /**
      * текущий контекст отрисовки
@@ -69,10 +75,19 @@ var Game = function(context, width, height) {
      */
     this._height = height;
 
-
-
+    /**
+     * менеджер ресурсов
+     * @type {ResourceManager}
+     * @private
+     */
+    this._resourceManager = new ResourceManager( this );
 
 };
+
+Game.prototype.resourceManager = function(){
+    return this._resourceManager;
+};
+
 
 /**
  * получить ширину игрового экрана
@@ -106,7 +121,6 @@ Game.prototype.start = function(){
         throw new Error( "Game::start(): _height is undefined" );
     }
 
-
     console.log( "Game::start()", "width", this._width,"height", this._height );
     this._active = true;
     this._nextGameTick = (new Date()).getTime();
@@ -115,8 +129,12 @@ Game.prototype.start = function(){
         _game._loops = 0;
         while( (new Date()).getTime() > _game._nextGameTick && _game._loops < _game._maxFrameSkip ) {
             debug.updateStatsWidget().update();
-            _game.onUpdate();
 
+            if( _game._time + 1 >= Number.MAX_VALUE )
+                _game._time = 0;
+            _game._time++;
+
+            _game.onUpdate();
             _game._nextGameTick += _game._skipTicks;
             _game._loops++;
         }
@@ -142,7 +160,6 @@ Game.prototype.stop = function(){
  * перезапуск игры
  */
 Game.prototype.restart = function() {
-    this.stop();
     this.init();
     this.start();
 };
@@ -152,6 +169,7 @@ Game.prototype.restart = function() {
  */
 Game.prototype.init = function() {
     console.log( "Game::init()" );
+    this._time = 0;
     this.setScene( "IntroScene" );
 };
 
@@ -223,13 +241,22 @@ Game.prototype.setScene = function(scene){
         this._scene.onFinish();
     }
 
+    this._time = 0;
     sceneToInstantiate.onInit();
     this._scene = sceneToInstantiate;
 };
 
 /**
+ * получить количество тиков с момента запуска сцены
+ * @returns {Number}
+ */
+Game.prototype.getFixedTime = function(){
+   return this._time;
+};
+
+/**
  * получить текущую сцену
- * @returns {Scene|*}
+ * @returns {Scene}
  */
 Game.prototype.scene = function () {
     return this._scene;
