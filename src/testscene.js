@@ -1,38 +1,14 @@
 var TestScene = function(_game) {
     Scene.apply( this, arguments );
-
-
-
 };
 
 TestScene.prototype = Object.create(Scene.prototype);
 TestScene.prototype.constructor = TestScene;
 
 
-TestScene.prototype.onDraw = function (context, interp) {
-    for( var i = 0; i < this._objects.length; i++ ) {
-        this._objects[ i ].draw(context, interp);
-    }
-};
-
 TestScene.prototype.onInit = function() {
-    for( var i = 0; i < 1; i++ )
-        this._objects.push( new Agregato() );
-};
-
-TestScene.prototype.onUpdate = function() {
-
-    for( var i = 0; i < this._objects.length; i++ ) {
-        if( this._objects[ i ]._needToDelete == true ) {
-            this._objects.splice( i, 1 );
-            console.log( this._objects.length );
-        } else {
-            this._objects[ i ].update();
-        }
-    }
-
-
-
+    for( var i = 0; i < 10; i++ )
+        this.addObject( new Agregato() );
 };
 
 TestScene.prototype.onEvent = function(event) {
@@ -47,7 +23,4 @@ TestScene.prototype.onEvent = function(event) {
     }
 
 
-};
-
-TestScene.prototype.onFinish = function(event) {
 };

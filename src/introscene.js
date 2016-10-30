@@ -25,8 +25,6 @@ IntroScene.prototype.constructor = IntroScene;
 
 IntroScene.prototype.onDraw = function (context, interp) {
 
-    context.save();
-
     context.fillStyle = "#000000";
     context.fillRect( 0, 0, this._gameRef.width(), this._gameRef.height() );
     if( this._isLoaded == true ) {
@@ -56,7 +54,6 @@ IntroScene.prototype.onDraw = function (context, interp) {
         context.fillText("Загрузка", Math.floor(this._gameRef.width() / 2), this._gameRef.height() - 50);
     }
 
-    context.restore();
 };
 
 IntroScene.prototype.onInit = function() {
@@ -92,7 +89,3 @@ IntroScene.prototype.onEvent = function(event) {
     }
 
 };
-
-IntroScene.prototype.onFinish = function(event) {
-};
-

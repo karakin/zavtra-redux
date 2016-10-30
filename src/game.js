@@ -84,6 +84,10 @@ var Game = function(context, width, height) {
 
 };
 
+/**
+ * получить ссылку на менеджер ресурсов
+ * @returns {ResourceManager}
+ */
 Game.prototype.resourceManager = function(){
     return this._resourceManager;
 };
@@ -182,16 +186,18 @@ Game.prototype.onFrameUpdate = function(){
 
     this._context.clearRect( 0, 0, this._width, this._height );
 
-    if( this._scene != undefined ) {
-        this._scene.onDraw( this._context, this._interp );
-    }
-
     this._context.save();
+    if( this._scene != undefined ) {
+        this._scene.draw( this._context, this._interp );
+    }
+    this._context.restore();
+
+
     this._context.fillStyle = "#FFFFFF";
     this._context.font = "10px Arial";
     this._context.textAlign="right";
     this._context.fillText( "Powered By Ledorub Engine", this._width - 15, 15 );
-    this._context.restore();
+
 };
 
 /**
@@ -200,7 +206,7 @@ Game.prototype.onFrameUpdate = function(){
  */
 Game.prototype.onUpdate = function(){
     if( this._scene != undefined ) {
-        this._scene.onUpdate();
+        this._scene.update();
     }
 };
 
@@ -238,11 +244,12 @@ Game.prototype.setScene = function(scene){
     }
 
     if( this._scene != undefined ) {
-        this._scene.onFinish();
+        this._scene.finish();
     }
 
     this._time = 0;
-    sceneToInstantiate.onInit();
+    sceneToInstantiate.init();
+    this._scene = null;
     this._scene = sceneToInstantiate;
 };
 
