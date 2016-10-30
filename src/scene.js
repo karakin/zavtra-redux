@@ -51,7 +51,14 @@ Scene.prototype.addObject = function(object){
  * @param {string} objectName - имя объекта
  */
 Scene.prototype.removeObject = function(objectName){
+};
 
+/**
+ * получить список всех объектов на сцене
+ * @returns {Array}
+ */
+Scene.prototype.objects = function(){
+    return this._objects;
 };
 
 /**
