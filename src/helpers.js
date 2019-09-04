@@ -13,6 +13,16 @@ Number.prototype.clamp = function(min, max) {
     return Math.min( Math.max( this, min ), max );
 };
 
+/**
+ *
+ * @param x
+ * @param y
+ * @constructor
+ */
+var Point = function (x, y) {
+    this._x = x;
+    this._y = y;
+};
 
 /**
  * @param {number} x - положение по X
@@ -25,23 +35,30 @@ var Rect = function(/* x, y, width, height */){
     this._x1 = 0;
     this._y1 = 0;
 
+    this._width = 0;
+    this._height = 0;
+
     this._x2 = 0;
     this._y2 = 0;
 
     //так как параметров по умолчанию не завезли, приходится костылить
-    if( arguments[ 0 ] != undefined )
+    if( arguments[ 0 ] !== undefined )
         this._x1 = arguments[ 0 ];
 
-    if( arguments[ 1 ] != undefined )
+    if( arguments[ 1 ] !== undefined )
         this._y1 = arguments[ 1 ];
 
-    if( arguments[ 2 ] != undefined )
+    if( arguments[ 2 ] !== undefined )
+    {
         this._x2 = ( this._x1 + arguments[ 2 ]);
+        this._width = arguments[ 2 ];
+    }
 
-    if( arguments[ 3 ] != undefined )
+    if( arguments[ 3 ] !== undefined )
+    {
         this._y2 = ( this._y1 + arguments[ 3 ]);
-
-    console.log( this );
+        this._height = arguments[ 3 ];
+    }
 };
 
 /**
@@ -65,7 +82,7 @@ Rect.prototype.y = function(){
  * @returns {number} ширина
  */
 Rect.prototype.width = function(){
-    return Math.abs( this._x2 - this._x1 );
+    return this._width;
 };
 
 /**
@@ -73,7 +90,7 @@ Rect.prototype.width = function(){
  * @returns {number}
  */
 Rect.prototype.height = function(){
-    return Math.abs( this._y2 - this._y1 );
+    return this._height;
 };
 
 /**

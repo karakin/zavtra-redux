@@ -14,6 +14,7 @@ var ResourceManager = function(gameRef){
     this._gameRef = gameRef;
     this._resources = [];
 
+
 };
 
 /**
@@ -22,6 +23,14 @@ var ResourceManager = function(gameRef){
  * @param resourceUrl
  */
 ResourceManager.prototype.addImage = function(resourceName, resourceUrl) {
+};
+
+/**
+ * добавить звук в список ресурсов игры
+ * @param resourceName
+ * @param resourceUrl
+ */
+ResourceManager.prototype.addSound = function(resourceName, resourceUrl) {
 };
 
 /**

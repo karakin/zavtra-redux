@@ -82,6 +82,10 @@ var Game = function(context, width, height) {
      */
     this._resourceManager = new ResourceManager( this );
 
+
+
+    this._collisionManager = new CollisionManager( new Rect( 0, 0, this._width, this._height ) );
+
 };
 
 /**
@@ -115,13 +119,13 @@ Game.prototype.height = function() {
  */
 Game.prototype.start = function(){
 
-    if( this._context == undefined ) {
+    if( this._context === undefined ) {
         throw new Error( "Game::start(): _context is undefined" );
     }
-    if( this._width == undefined ) {
+    if( this._width === undefined ) {
         throw new Error( "Game::start(): _width is undefined" );
     }
-    if( this._height == undefined ) {
+    if( this._height === undefined ) {
         throw new Error( "Game::start(): _height is undefined" );
     }
 
@@ -187,11 +191,12 @@ Game.prototype.onFrameUpdate = function(){
     this._context.clearRect( 0, 0, this._width, this._height );
 
     this._context.save();
-    if( this._scene != undefined ) {
+    if( this._scene !== undefined && this._scene != null ) {
         this._scene.draw( this._context, this._interp );
     }
     this._context.restore();
 
+    this._collisionManager.draw(this._context, this._interp);
 
     this._context.fillStyle = "#FFFFFF";
     this._context.font = "10px Arial";
@@ -205,7 +210,9 @@ Game.prototype.onFrameUpdate = function(){
  * Выполняется this._tps раз в секунду
  */
 Game.prototype.onUpdate = function(){
-    if( this._scene != undefined ) {
+    if( this._scene !== undefined ) {
+
+        this._collisionManager.update( this._scene.objects() );
         this._scene.update();
     }
 };
@@ -219,7 +226,7 @@ Game.prototype.onEvent = function(event) {
     if( this._active ) {
         console.log( "Game::onEvent()", event.type );
 
-        if( this._scene != undefined ) {
+        if( this._scene !== undefined ) {
             this._scene.onEvent( event );
         }
     }
@@ -234,16 +241,16 @@ Game.prototype.setScene = function(scene){
 
     console.log( "Game::setScene()", scene );
 
-    if( window[scene] == undefined )
+    if( window[scene] === undefined )
         throw new Error( "Game::setScene() " + scene + " does not name a type" );
 
     var sceneToInstantiate = new window[ scene ](this);
 
-    if( sceneToInstantiate == undefined ) {
+    if( sceneToInstantiate === undefined ) {
         throw new Error( "Game::setScene() Scene is undefined" );
     }
 
-    if( this._scene != undefined ) {
+    if(this._scene !== undefined && this._scene != null) {
         this._scene.finish();
     }
 
@@ -268,4 +275,3 @@ Game.prototype.getFixedTime = function(){
 Game.prototype.scene = function () {
     return this._scene;
 };
-

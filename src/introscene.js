@@ -27,7 +27,7 @@ IntroScene.prototype.onDraw = function (context, interp) {
 
     context.fillStyle = "#000000";
     context.fillRect( 0, 0, this._gameRef.width(), this._gameRef.height() );
-    if( this._isLoaded == true ) {
+    if( this._isLoaded === true ) {
 
         context.textAlign = "center";
 
@@ -66,7 +66,7 @@ IntroScene.prototype.onUpdate = function() {
     this._y += this._dy;
 
 
-    if( !this._isLoaded && this._loadCount == this._maxCount )
+    if( !this._isLoaded && this._loadCount === this._maxCount )
         this._isLoaded = true;
 
     this._progressBarLoadedWidth = this._progressBarWidth * ( this._loadCount / this._maxCount );

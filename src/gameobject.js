@@ -9,6 +9,8 @@ var Component = function(object){
      * @protected
      */
     this._objectRef = object;
+
+
 };
 
 var TransformComponent = function(object){
@@ -40,6 +42,22 @@ TransformComponent.prototype.height = function(){
     return this._height;
 };
 
+/**
+ * получить положение объекта
+ * @returns {Point}
+ */
+TransformComponent.prototype.position = function(){
+    return new Point( this._x, this._y );
+};
+
+/**
+ * 
+ * @returns {Rect}
+ */
+TransformComponent.prototype.rect = function () {
+    return new Rect( this._x, this._y, this._width, this._height );
+};
+
 
 
 TransformComponent.prototype.setX = function(x){
@@ -50,12 +68,18 @@ TransformComponent.prototype.setY = function(y){
     this._y = y;
 };
 
-var TestComponent = function(object){
+var Collider = function(object){
     Component.apply(this, arguments);
 };
 
-TestComponent.prototype = Object.create(Component.prototype);
-TestComponent.prototype.constructor = TestComponent;
+Collider.prototype = Object.create(Component.prototype);
+Collider.prototype.constructor = Collider;
+
+Collider.prototype.draw = function(context, interp){
+    context.fillStyle = "#FF0000";
+    context.rect( this._objectRef.transform().x(), this._objectRef.transform().y(), 10, 10 );
+    context.stroke();
+};
 
 
 
@@ -63,6 +87,14 @@ TestComponent.prototype.constructor = TestComponent;
 
 
 var GameObject = function(){
+
+    /**
+     * имя объекта
+     * @type {string}
+     * @private
+     */
+    this._objectName = "";
+
     this._transform = new TransformComponent( this );
     this._components = [ this._transform ];
 
@@ -120,7 +152,25 @@ GameObject.prototype.addComponent = function(component){
    this._components.push( component );
 };
 
+/**
+ * получить имя объекта
+ * @returns {string}
+ */
+GameObject.prototype.name = function(){
+    return this._objectName;
+};
+
+/**
+ * установить имя объекта
+ * @param {string} name - новое имя объекта
+ */
+GameObject.prototype.setName = function (name) {
+    this._objectName = name;
+};
+
 GameObject.prototype.update = function(){
+
+
 
     if( this._transform.x() - this._dx < 0 ) {
         this._transform.setX( 3 );
@@ -153,8 +203,8 @@ GameObject.prototype.deleteLater = function(){
 };
 
 GameObject.prototype.draw = function(context, interp){
-
-    context.fillRect( this._transform.x() + this._dx * interp, this._transform.y() + this._dy * interp, 2, 2 );
+    context.fillStyle = "#000000";
+    context.fillText( this._objectName + "\n" + this._transform.x() + ":" + this._transform.y(), this._transform.x() + this._dx * interp, this._transform.y() + this._dy * interp );
 
 };
 
@@ -163,14 +213,18 @@ GameObject.prototype.draw = function(context, interp){
 var Agregato = function(){
     GameObject.apply(this, arguments);
 
+    this._objectName = "agregato";
+
+
+
 };
 Agregato.prototype = Object.create(GameObject.prototype);
 Agregato.prototype.constructor = Agregato;
 
 Agregato.prototype.draw = function(context, interp){
-
+    GameObject.prototype.draw.call(this, context, interp);
     //context.drawImage(window["resource_1"], this._transform.x() + this._dx * interp, this._transform.y() + this._dy * interp, 50, 50);
-    context.fillText( this._transform.x() + ":" + this._transform.y(), this._transform.x() + this._dx * interp, this._transform.y() + this._dy * interp );
+
 
 };
 

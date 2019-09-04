@@ -68,11 +68,11 @@ Scene.prototype.objects = function(){
  * может быть вызван только из метода onUpdate класса Game
  */
 Scene.prototype.update = function () {
-    if( this.update.caller != Game.prototype.onUpdate )
+    if( this.update.caller !== Game.prototype.onUpdate )
         throw new Error( "Cant invoke method Scene::update() outside Game::onUpdate" );
 
     for( var i = 0; i < this._objects.length; i++ ) {
-        if( this._objects[ i ]._needToDelete == true ) {
+        if( this._objects[ i ]._needToDelete === true ) {
             this._objects.splice( i, 1 );
             console.log( this._objects.length );
         } else {
@@ -85,13 +85,13 @@ Scene.prototype.update = function () {
 
 /**
  * отобразить объекты на сцене и вызвать метод onDraw
+ * может быть вызван только из метода onFrameUpdate класса Game
+ * @method draw
  * @param {CanvasRenderingContext2D} context
  * @param {number} interp
- *
- * может быть вызван только из метода onFrameUpdate класса Game
  */
 Scene.prototype.draw = function (context, interp) {
-    if( this.draw.caller != Game.prototype.onFrameUpdate )
+    if( this.draw.caller !== Game.prototype.onFrameUpdate )
         throw new Error( "Cant invoke method Scene::draw() outside Game::onFrameUpdate" );
 
     for( var i = 0; i < this._objects.length; i++ ) {
@@ -104,9 +104,10 @@ Scene.prototype.draw = function (context, interp) {
 /**
  * инициализация сцены
  * может быть вызван только из метода setScene класса Game
+ * @method init
  */
 Scene.prototype.init = function(){
-    if( this.init.caller != Game.prototype.setScene )
+    if( this.init.caller !== Game.prototype.setScene )
         throw new Error( "Cant invoke method Scene::init() outside Game::setScene" );
 
     this.onInit();
@@ -115,9 +116,10 @@ Scene.prototype.init = function(){
 /**
  * "деструктор"
  * может быть вызван только из метода setScene класса Game
+ * @method finish
  */
 Scene.prototype.finish = function(){
-    if( this.finish.caller != Game.prototype.setScene )
+    if( this.finish.caller !== Game.prototype.setScene )
         throw new Error( "Cant invoke method Scene::finish() outside Game::setScene" );
 
     this.onFinish();
@@ -128,6 +130,7 @@ Scene.prototype.finish = function(){
 /**
  * Выполняется при инициализации сцены
  * @abstract
+ * @method onInit
  */
 Scene.prototype.onInit = function() {
 };
@@ -136,6 +139,7 @@ Scene.prototype.onInit = function() {
  * Выполняется каждый игровой тик
  * В данном методе реализуется обновление состояний сцены и объектов
  * @abstract
+ * @method onUpdate
  */
 Scene.prototype.onUpdate = function() {
 };
@@ -153,6 +157,7 @@ Scene.prototype.onDraw = function(context, interp) {
  * обработчик событий, поступивших от пользователя
  * @param {Event} event - событие
  * @abstract
+ * @method onEvent
  */
 Scene.prototype.onEvent = function(event) {
 };
@@ -160,6 +165,7 @@ Scene.prototype.onEvent = function(event) {
 /**
  * вызывается при завершении текущей сцены
  * @abstract
+ * @method onFinish
  */
 Scene.prototype.onFinish = function() {
 };

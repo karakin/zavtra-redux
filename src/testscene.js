@@ -14,11 +14,11 @@ TestScene.prototype.onInit = function() {
 TestScene.prototype.onEvent = function(event) {
     console.log( "TestScene::event()", event );
 
-    if( event.type == "keydown" && event.keyCode == 13 ) {
+    if( event.type === "keydown" && event.keyCode === 13 ) {
         this._objects.push( new Agregato() );
     }
 
-    if( event.type == "keydown" && event.keyCode == 8 ) {
+    if( event.type === "keydown" && event.keyCode === 8 ) {
         this._gameRef.setScene( "IntroScene" );
     }
 
